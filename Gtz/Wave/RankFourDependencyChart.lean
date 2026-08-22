@@ -64,6 +64,15 @@ budgets.  Two consequences follow with no further work:
 complementary selections cannot fail at the same dependency — and
 `Gtz.not_dominates_and_compl_of_budget_neg`, its weight-aware converse.
 
+**5.  THE CORANK-ONE CRITERION, COMPLETED.**  `Gtz.dominates_erase_of_coMean_le`
+supplies one arrow of the corank-one weak criterion and the tree carries no
+converse.  The pair-mass reading supplies it, because at corank one the canonical
+dependency of `Gtz.exists_dependency` has `dep_c² = t_c u_c`, so the criterion's
+left side IS `Gtz.coMean` and its single right-hand term IS `Gtz.coRatio`:
+
+    `Gtz.dominates_erase_iff_coMean_le` :
+      `Dominates D (univ.erase d)  ↔  coMean D ≤ coRatio D d` .
+
 ## What the tie and the hinge become
 
 `Gtz.isTie_iff_dependency` and `Gtz.hingeHoldsAtSize_iff_dependency` package the
@@ -113,6 +122,7 @@ import Gtz.Quantitative.DiscriminantSystem
 import Gtz.Wave.TieParallelPairWeightRegular
 import Gtz.Wave.DependencyDominationCriterion
 import Gtz.Wave.CircuitSwapLaw
+import Gtz.Wave.CorankOneRigidity
 import Gtz.Wave.ChartQuadraticCore
 import Gtz.Wave.BandTieTower
 
@@ -518,6 +528,82 @@ theorem corankTwo_not_dominates_of_sparse (D : WeightedDesign (k + 2) k)
   have hout : index ∉ C := Finset.mem_compl.mp hindex
   refine hsupport index (fun hcontra => hout (hcontra ▸ hfirst))
     (fun hcontra => hout (hcontra ▸ hsecond))
+
+/-- **THE PAIR-MASS READING AT A SUBSET.**  The subset-indexed form of
+`Gtz.dominates_iff_dependencyBound_pairMass`. -/
+theorem dominates_iff_dependencyPairMass (D : WeightedDesign m k) (hm : 2 ≤ m)
+    {C : Finset (Fin m)} (hcard : C.card = k) :
+    Dominates D C
+      ↔ ∀ dep : Fin m → ℝ, (∑ index, dep index • D.atom index) = 0 →
+          ∑ index, dep index ^ 2 / (1 - D.weight index)
+            ≤ ∑ index ∈ Cᶜ, dep index ^ 2 / (D.weight index * (1 - D.weight index)) := by
+  have hstep := dominates_iff_dependencyBound_pairMass D hm (C.orderEmbOfFin hcard)
+    (C.orderEmbOfFin hcard).injective
+  rw [image_orderEmb_univ_eq hcard] at hstep
+  exact hstep
+
+/-! ### The corank-one criterion, completed to an equivalence
+
+`Gtz.dominates_erase_of_coMean_le` supplies one arrow of the corank-one weak
+criterion and the tree carries no converse.  The pair-mass reading supplies it in
+four lines: at corank one the canonical dependency of `Gtz.exists_dependency` has
+`dep_c² = t_c u_c`, which turns the left side of the criterion into
+`Gtz.coMean` and its single right-hand term into `Gtz.coRatio`. -/
+
+/-- The complement of a co-singleton is the singleton. -/
+theorem compl_univ_erase {ambient : ℕ} (label : Fin ambient) :
+    (Finset.univ.erase label)ᶜ = {label} := by
+  classical
+  ext other
+  simp
+
+/-- The coordinatewise dependency of `Gtz.exists_dependency`, read as one vector
+identity. -/
+theorem sum_smul_atom_eq_zero_of_coord {ambient : ℕ} (D : WeightedDesign ambient k)
+    {dep : Fin ambient → ℝ}
+    (hdep : ∀ coordIndex : Fin k, ∑ atomIndex, dep atomIndex * D.atom atomIndex coordIndex = 0) :
+    (∑ index, dep index • D.atom index) = 0 := by
+  funext coord
+  rw [Finset.sum_apply]
+  have hterm : ∀ index : Fin ambient, (dep index • D.atom index) coord
+      = dep index * D.atom index coord := fun index => by
+    rw [Pi.smul_apply, smul_eq_mul]
+  rw [Finset.sum_congr rfl fun index _ => hterm index, hdep coord]
+  rfl
+
+/-- **THE MISSING ARROW OF THE CORANK-ONE CRITERION.**  A co-singleton that
+dominates forces its own co-ratio to clear the co-mean. -/
+theorem coMean_le_coRatio_of_dominates_erase (D : WeightedDesign (k + 1) k) (hrank : 1 ≤ k)
+    (label : Fin (k + 1)) (hdom : Dominates D (Finset.univ.erase label)) :
+    coMean D ≤ coRatio D label := by
+  classical
+  have hm : 2 ≤ k + 1 := by omega
+  obtain ⟨dep, hcoord, hnorm, -⟩ := exists_dependency D
+  have hsmul := sum_smul_atom_eq_zero_of_coord D hcoord
+  have hstep := (dominates_iff_dependencyPairMass D hm (card_univ_erase label)).mp hdom dep hsmul
+  rw [compl_univ_erase label, Finset.sum_singleton] at hstep
+  have hleft : ∑ index, dep index ^ 2 / (1 - D.weight index) = coMean D := by
+    rw [coMean]
+    refine Finset.sum_congr rfl fun index _ => ?_
+    rw [hnorm index, coRatio, mul_div_assoc]
+  have hright : dep label ^ 2 / (D.weight label * (1 - D.weight label))
+      = coRatio D label := by
+    have hw : D.weight label ≠ 0 := (D.weight_pos label).ne'
+    have hco : (1 : ℝ) - D.weight label ≠ 0 := by
+      have := weight_lt_one D hm label; intro hzero; linarith [hzero]
+    rw [hnorm label, coRatio]
+    field_simp
+    try ring
+  rw [hleft, hright] at hstep
+  exact hstep
+
+/-- **THE CORANK-ONE WEAK CRITERION IS AN EQUIVALENCE.**  Both arrows: the landed
+`Gtz.dominates_erase_of_coMean_le` and the pair-mass converse above. -/
+theorem dominates_erase_iff_coMean_le (D : WeightedDesign (k + 1) k) (hrank : 1 ≤ k)
+    (label : Fin (k + 1)) :
+    Dominates D (Finset.univ.erase label) ↔ coMean D ≤ coRatio D label :=
+  ⟨coMean_le_coRatio_of_dominates_erase D hrank label,
+    dominates_erase_of_coMean_le D hrank label⟩
 
 /-! ## 7. The self-dual cell: complementary selections share one budget
 
