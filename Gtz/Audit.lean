@@ -1493,6 +1493,7 @@ import Gtz.Wave.CouplingRankBudget
 import Gtz.Complex.ComplexTransportLedger
 import Gtz.Wave.TwoPlaneCoplanarStructure
 import Gtz.Wave.CoplanarCircleGap
+import Gtz.Wave.PlaneWeightFloor
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -40182,3 +40183,40 @@ run_cmd do
 #print axioms Gtz.planeProbe_dotProduct_self
 #print axioms Gtz.exists_planeStrictPair_of_zeroShadow
 #print axioms Gtz.sixThree_exists_planeStrictPair_of_zeroShadow
+
+-- Gtz/Wave/PlaneWeightFloor.lean -- the plane weight floor.  A plane sub-frame whose
+--   leverages exceed one and none of whose pairs strictly dominates the identity on the
+--   plane it spans carries total weight at least ONE, at every size and with the total
+--   weight unnormalised.  Three moves: a pair-cap core on the co-shares, corank one at
+--   three atoms, and a dependency exchange that cuts the support without lowering the
+--   excess total.  The same core run at corank one gives a plane-strict pair at every
+--   (k+1, k) design of rank at least three.  The light trine REFUTES the campaign
+--   brief's triple cap conjecture on realisable data.
+#print axioms Gtz.sum_le_one_of_pairCap
+#print axioms Gtz.sum_weight_mul_leverage_sub_one_eq
+#print axioms Gtz.sum_weight_mul_leverage_sub_one_le_one_of_corankOne
+#print axioms Gtz.rank_le_two_of_noPlaneStrictPair
+#print axioms Gtz.exists_planeStrictPair_of_three_le_rank
+#print axioms Gtz.planeFrame_diagReading
+#print axioms Gtz.planeFrame_crossReading
+#print axioms Gtz.planeFrame_trace
+#print axioms Gtz.planeLagrange_leverage
+#print axioms Gtz.coShare_planeTriple_aux
+#print axioms Gtz.coShare_mul_planeTriple_aux
+#print axioms Gtz.sum_excess_le_one_of_planeTriple
+#print axioms Gtz.not_planeFrame_singleton
+#print axioms Gtz.not_planeFrame_pair
+#print axioms Gtz.exists_planeDependency
+#print axioms Gtz.exists_smaller_planeFrame_of_dependency
+#print axioms Gtz.exists_smaller_planeFrame
+#print axioms Gtz.sum_excess_le_one_of_planeFrame
+#print axioms Gtz.one_le_sum_weight_of_planeFrame
+#print axioms Gtz.weighted_mean_leverage_le_two
+#print axioms Gtz.exists_planeStrictPair_of_sum_weight_lt_one
+#print axioms Gtz.lightTrineAtom_leverage
+#print axioms Gtz.lightTrineFrame
+#print axioms Gtz.lightTrine_sum_weight
+#print axioms Gtz.lightTrine_noStrictPair
+#print axioms Gtz.nonStrictCapAngle_lightTrine
+#print axioms Gtz.pi_div_three_lt_arccos_inv_eleven
+#print axioms Gtz.two_pi_lt_sum_nonStrictCapAngle_lightTrine

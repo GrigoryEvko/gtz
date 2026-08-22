@@ -90,29 +90,51 @@ reads `1 - t_1 - t_2 <= t_1 s_1 + t_2 s_2` with `s_i = q_i^T A^{-1} q_i`.  It
 strengthens the landed area ceiling by `(t_c + t_d) pairGapMinor`, where `c`, `d`
 are the coplanar atoms outside the pair.  It is a wall and not a kill.
 
-## Part 5 — the pair-normal Gram trichotomy
+## Part 5 — the five-coplanar stratum is EMPTY
 
-Now put the axis along the normal of a PAIR instead of a plane of four.  Every
-quantity the shadow trichotomy mentions then becomes a polynomial in the Gram
-matrix of the six atoms, because the normal itself is `g_a x g_b` and
+Everything above is conditional.  This part is not.  If all but ONE atom of a
+rank-three design lie in a plane, the exceptional atom is a SPIKE along the normal
+and its shadow VANISHES.  The rest then carry the whole in-plane Parseval identity
+on a total weight of `1 - t`, so rescaling them gives a genuine rank-two design one
+label shorter.  Rank-two GTZ is a THEOREM, and the weight deficit turns its weak
+pair into a STRICT dominator of the plane.  With the spike the gap is block
+diagonal and both blocks are positive, so the triple dominates strictly.
 
-    (g_p x g_q) . (g_a x g_b) = (g_p.g_a)(g_q.g_b) - (g_p.g_b)(g_q.g_a)
+    Gtz.not_isTie_of_spike, Gtz.not_isTie_sixThree_of_fiveCoplanar
 
-is Binet-Cauchy.  Writing `X = crossNormSq(g_a, g_b)`, `[abc]` for the triple
-bracket and `gramWedge` for the four-atom minor above:
+Two frame-free readings: no atom of a rank-three tie is orthogonal to every other
+atom (`Gtz.not_isTie_of_atom_orthogonal_to_all` — a row of the Gram matrix whose
+off-diagonal entries all vanish), and no plane holds five atoms of a `(6,3)` tie.
 
-* the shadow is LIGHT at `c` exactly when `X (l_c - 1) < [abc]^2`;
-* the shadow pair `{p,q}` dominates STRICTLY exactly when
-  `gramWedge(p,q,a,b)^2 + [abp]^2 + [abq]^2 > X (l_p + l_q - 1)`;
-* otherwise at least THREE of the fifteen pairs `{c,d}` satisfy
-  `gramWedge(c,d,a,b) = 0`.
+## Part 6 — a light off-plane pair hands the plane a strict COPLANAR pair
 
-`Gtz.pairNormal_gram_trichotomy` is that statement, and it holds at EVERY
-rank-three design of six atoms with no tie hypothesis at all.  The `(6,3)`
-capstone `Gtz.hingeHoldsAtSize_six_three_of_pairNormalGramResidue` reduces the
-hinge — and through `Gtz.gtzWeightedAll_three_of_hinge` the whole of weighted GTZ
-at rank three — to refuting one named residue in which all three Gram
-alternatives are simultaneously pinned at every one of the fifteen pairs.
+The plane weight deficit is a LAW of its own
+(`Gtz.exists_planeStrict_of_weightSum_lt_one`): a plane Parseval family whose
+weights total below one carries a pair that beats every nonzero plane probe.  At
+total weight one it fails, and that boundary is the rank-two tie classification.
+
+Part 6 spends it on the four-coplanar stratum.  The two off-plane shadows are
+PARALLEL by Part 1, so their two rank-one contributions to the in-plane identity
+add to a single rank-one term along one unit direction carrying their total shadow
+mass.  Replacing them by one fictitious UNIT atom of that mass leaves a
+five-member plane family of total weight
+
+    (coplanar weight) + t_1 lambda_1 + t_2 lambda_2 ,
+
+below one exactly when the two off-plane shadows are LIGHT on weighted average.
+Cauchy-Schwarz keeps the fictitious unit atom out of the pair the law returns, so
+both members are COPLANAR atoms of the design.  That is
+`Gtz.exists_coplanar_planeStrictPair_of_lightOffPlane`: the light-shadow residue
+implies the strict-pair residue, and the strict pair is where the coplanar wall of
+Part 4 applies.
+
+## Part 7 — a single vanishing shadow forces a strict plane pair
+
+Part 5 dropped one atom from the in-plane identity and asked every other atom to
+be flat.  Neither restriction is real.  The in-plane identity is carried by the
+SHADOWS, so an atom parallel to the axis contributes nothing to it and can be
+dropped whatever the others do.  `Gtz.exists_planeStrictPair_of_zeroShadow` is the
+law that follows, with no tie, no heaviness, no flatness and no coplanarity.
 -/
 import Gtz.Wave.PlaneShadowPairBridge
 import Gtz.Wave.RankTwoTieClassification
