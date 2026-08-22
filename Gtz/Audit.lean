@@ -1495,6 +1495,7 @@ import Gtz.Complex.ComplexTransportLedger
 import Gtz.Wave.TwoPlaneCoplanarStructure
 import Gtz.Wave.CoplanarCircleGap
 import Gtz.Wave.PlaneWeightFloor
+import Gtz.Wave.PrimitiveTiePackage
 import Gtz.Wave.CoShareBudget
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
@@ -40268,3 +40269,35 @@ run_cmd do
 #print axioms Gtz.det_sub_smul_one_pairMinorSum
 #print axioms Gtz.posSemidef_of_invariants_nonneg
 #print axioms Gtz.posSemidef_one_sub_of_det_nonneg_of_trace_le_two
+
+/-! ### Gtz/Wave/PrimitiveTiePackage.lean -- the doubled co-leverage criterion
+and the primitive tie package. -/
+
+#print axioms Gtz.diagRoot_pos
+#print axioms Gtz.diagRoot_mul_self
+#print axioms Gtz.diagNormalize_apply
+#print axioms Gtz.posSemidef_diagNormalize
+#print axioms Gtz.congr_one_sub_diagNormalize
+#print axioms Gtz.posSemidef_diagonal_sub_of_det_nonneg_of_weightedTrace_le_two
+#print axioms Gtz.posDef_diagonal_sub_of_det_pos_of_weightedTrace_le_two
+#print axioms Gtz.dominates_iff_posSemidef_tripleChartGap
+#print axioms Gtz.tripleChartGap_eq
+#print axioms Gtz.sum_complementBlock_div_coWeight
+#print axioms Gtz.dominates_of_sum_coLeverageRatio_le_two
+#print axioms Gtz.posDef_tripleChartGap_of_sum_coLeverageRatio_le_two
+#print axioms Gtz.dominates_iff_det_nonneg_of_sum_coLeverageRatio_le_two
+#print axioms Gtz.coLeverageRatio_lt_one_iff
+#print axioms Gtz.sum_coLeverageRatio_lt_of_allHeavy
+#print axioms Gtz.sum_coLeverageRatio_lt_four_of_allHeavy_sixThree
+#print axioms Gtz.exists_compl_sum_coLeverageRatio_lt_two
+#print axioms Gtz.card_compl_eq_three
+#print axioms Gtz.exists_triple_dominates_iff_tripleChartGapDet_nonneg
+#print axioms Gtz.image_orderEmbOfFin_eq
+#print axioms Gtz.posDef_gap_iff_posDef_tripleChartGap
+#print axioms Gtz.tripleChartGapDet_nonpos_of_isTie_of_sum_le_two
+#print axioms Gtz.exists_triple_tripleChartGapDet_nonpos_of_isTie_allHeavy
+#print axioms Gtz.allHeavy_of_isPrimitiveDesign_of_isTie_sixThree
+#print axioms Gtz.not_fourCoplanar_of_isPrimitiveDesign_of_isTie
+#print axioms Gtz.exists_complementary_four
+#print axioms Gtz.isPrimitiveDesign_naimarkSharpDesign_of_isPrimitiveDesign_of_isTie
+#print axioms Gtz.sixThree_primitiveTie_sharpNormalForm

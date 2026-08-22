@@ -6844,3 +6844,4 @@ import Gtz.Wave.CircuitGramTrace
 import Gtz.Wave.PlaneWeightFloor
 import Gtz.Wave.CoShareBudget
 import Gtz.Wave.PencilTraceLaw
+import Gtz.Wave.PrimitiveTiePackage
